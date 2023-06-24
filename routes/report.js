@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Attendance = require('../models/Attendance');
 
 router.post('/', async (req, res) => {
@@ -25,19 +26,25 @@ router.post('/', async (req, res) => {
 
 // Function to retrieve student attendance data from the database
 async function getAttendanceData(studentId, startDate, endDate) {
-  try {
-    const attendanceData = await Attendance.find({
-      student: studentId,
-      date: { $gte: startDate, $lte: endDate },
-    });
-
-    return attendanceData;
-  } catch (error) {
-    console.error('Error retrieving the attendance data:', error);
-    throw error;
+    try {
+        console.log('studentId', studentId);
+      const isValidObjectId = mongoose.Types.ObjectId.isValid(studentId);
+      console.log('isValidObjectId:', isValidObjectId);
+      if (!isValidObjectId) {
+        throw new Error('Invalid studentId');
+      }
+  
+      const attendanceData = await Attendance.find({
+        student: new mongoose.Types.ObjectId(studentId),
+        date: { $gte: startDate, $lte: endDate },
+      });
+  
+      return attendanceData;
+    } catch (error) {
+      console.error('Error retrieving the attendance data:', error);
+      throw error;
+    }
   }
-}
-
 // Function to generate the attendance report based on the attendanceData
 function generateAttendanceReport(attendanceData) {
   let presentCount = 0;
