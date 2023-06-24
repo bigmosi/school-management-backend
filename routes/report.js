@@ -49,4 +49,12 @@ function generateAttendanceReport(attendanceData) {
             absentCount++;
         }
     });
+
+    const reportContent = `Attendance Report\n` +
+    `Total Present: ${presentCount}\n` +
+    `Total Absent: ${absentCount}\n`;
+
+    return reportContent;
 }
+
+module.exports = router;

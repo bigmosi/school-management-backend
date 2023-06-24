@@ -5,7 +5,8 @@ const chalk = require('chalk');
 const cors = require('cors');
 const studentRoutes = require('./routes/studentRoutes');
 const admission = require('./routes/admission');
-const attendance = require('./routes/attendance')
+const attendance = require('./routes/attendance');
+const report = require('./routes/report');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -20,6 +21,7 @@ app.use(cors());
 app.use('/api/students', studentRoutes);
 app.use('/api/admissions', admission);
 app.use('/api/attendance', attendance);
+app.use('/api/reports', report);
 
 
 mongoose
