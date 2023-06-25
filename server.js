@@ -10,6 +10,7 @@ const report = require('./routes/report');
 const classes = require('./routes/class');
 const teacher = require('./routes/teacher');
 const schedule = require('./routes/schedule');
+const subject = require('./routes/subject');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/reports', report);
 app.use('/api/classes', classes);
 app.use('/api/teachers', teacher);
 app.use('/api/schedules', schedule);
+app.use('/api/subjects', subject);
 
 mongoose
   .connect('mongodb://localhost:27017/schoolDB')
