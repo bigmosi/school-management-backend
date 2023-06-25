@@ -10,7 +10,7 @@ const subjectSchema = new mongoose.Schema({
         required: true
     },
     teacher: {
-        type: mongoose.Schema.Types.ObjectId;
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Teacher',
         required: true
     }
