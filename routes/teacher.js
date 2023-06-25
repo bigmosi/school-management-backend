@@ -27,19 +27,17 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, post) => {
+router.post('/', async (req, res) => {
     try {
-        const { name, email } = req.body;
-
-        const teacher = new Teacher({ name, email });
-
-        await new teacher.save();
-        res.status(201).json(teacher);
+      const { name, email } = req.body;
+      const teacher = new Teacher({ name, email });
+      await teacher.save();
+      res.status(201).json(teacher);
     } catch (error) {
-        console.error('Error creating teacher', error);
-        res.status(500).json({ error: 'An error occured while creating teacher.' });
+      console.error('Error creating teacher:', error);
+      res.status(500).json({ error: 'An error occurred while creating the teacher.' });
     }
-});
+  });
 
 router.put('/:id', async (req, res) => {
    try {
