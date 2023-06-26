@@ -11,6 +11,7 @@ const classes = require('./routes/class');
 const teacher = require('./routes/teacher');
 const schedule = require('./routes/schedule');
 const subject = require('./routes/subject');
+const authRouter = require('./routes/auth');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/classes', classes);
 app.use('/api/teachers', teacher);
 app.use('/api/schedules', schedule);
 app.use('/api/subjects', subject);
+app.use('/api/auth', authRouter);
 
 mongoose
   .connect('mongodb://localhost:27017/schoolDB')
