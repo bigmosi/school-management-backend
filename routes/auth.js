@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/User');
 
 const router = express.Router();
@@ -37,6 +38,14 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Generate a random secret key
+const generateSecretKey = () => {
+    return crypto.randomBytes(32).toString('hex'); // Generates a 32-byte (256-bit) key
+  };
+  
+  const secretKey = generateSecretKey();
+  console.log('Secret Key:', secretKey);
+
 router.post('/login', async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -58,7 +67,7 @@ router.post('/login', async (req, res) => {
       }
   
       // Generate a JWT token
-      const token = jwt.sign({ userId: user._id, username: user.username }, 'your_secret_key', {
+      const token = jwt.sign({ userId: user._id, username: user.username }, secretKey, {
         expiresIn: '1h' // Set the token expiry time
       });
   
@@ -74,5 +83,15 @@ router.post('/login', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  // Logout user
+router.post('/logout', (req, res) => {
+    // Clear the token from the client's browser
+    res.clearCookie('token');
+    
+    
+    res.status(200).json({ message: 'Logout successful' });
+  });
+  
 
 module.exports = router;

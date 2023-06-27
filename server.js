@@ -31,7 +31,7 @@ app.use('/api/classes', classes);
 app.use('/api/teachers', teacher);
 app.use('/api/schedules', schedule);
 app.use('/api/subjects', subject);
-app.use('/api/auth', authRouter);
+app.use('/api', authRouter);
 
 mongoose
   .connect('mongodb://localhost:27017/schoolDB')
