@@ -65,6 +65,11 @@ const studentSchema = new mongoose.Schema({
     },
   }
   ],
+  role: {
+    type: String,
+    enum: ['student', 'teacher', 'admin'],
+    default: 'student',
+  }
 });
 
 studentSchema.pre('find', function (next) {
