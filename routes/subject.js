@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Subject = require('../models/Subject');
 const Teacher = require('../models/Teacher');
-
 
 router.get('/', async (req, res) => {
     try {
@@ -58,7 +58,6 @@ router.post('/', async (req, res) => {
     }
   });
   
-
 router.put('/:id', async (req, res) => {
   try {
     const { name, code, teacher } = req.body;
