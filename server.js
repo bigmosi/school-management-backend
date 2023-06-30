@@ -11,7 +11,7 @@ const classes = require('./routes/class');
 const teacher = require('./routes/teacher');
 const schedule = require('./routes/schedule');
 const subject = require('./routes/subject');
-const annoucement = require('./routes/announcement');
+const announcement = require('./routes/announcement');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -31,7 +31,7 @@ app.use('/api/classes', classes);
 app.use('/api/teachers', teacher);
 app.use('/api/schedules', schedule);
 app.use('/api/subjects', subject);
-app.use('/api/annoucements', annoucement);
+app.use('/api/announcements', announcement);
 
 
 mongoose

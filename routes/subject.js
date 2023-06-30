@@ -1,6 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Subject = require('../models/Subject');
+const Teacher = require('../models/Teacher');
+
 
 router.get('/', async (req, res) => {
     try {
@@ -29,16 +32,32 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const { name, code, teacher } = req.body;
-        const subject = new Subject( { name, code, teacher });
-
-        await subject.save();
-        res.status(201).json({ subject: subject, message: 'Subject created successfully.' });
+      const { name, code, teacherId } = req.body;
+  
+      // Check if the teacherId is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+        return res.status(400).json({ error: 'Invalid teacherId' });
+      }
+  
+      // Check if the teacher with the specified teacherId exists
+      const teacherExists = await Teacher.exists({ _id: teacherId });
+      if (!teacherExists) {
+        return res.status(404).json({ error: 'Teacher not found' });
+      }
+  
+      // Create a new subject with the provided data
+      const subject = new Subject({ name, code, teacher: teacherId });
+  
+      // Save the subject to the database
+      await subject.save();
+  
+      res.status(201).json({ subject, message: 'Subject created successfully.' });
     } catch (error) {
-        console.error({ error: 'Error creating subject.', error});
-        res.status(500).json({ error: 'An error occurred while creating subject. '});
+      console.error('Error creating subject:', error);
+      res.status(500).json({ error: 'An error occurred while creating the subject.' });
     }
-});
+  });
+  
 
 router.put('/:id', async (req, res) => {
   try {
