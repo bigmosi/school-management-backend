@@ -2,6 +2,7 @@ const express = require('express');
 const LessonPlan = require('../models/LessonPlan');
 const multer = require('multer');
 const router = express.Router();
+const Teacher = require('../models/Teacher');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -43,12 +44,24 @@ router.get('/:teacherId', (req, res) => {
     const teacherId = req.params.teacherId;
 
     // Retrieve all the lesson plans for the specified teacher from the database
-    LessonPlan.find({ teacher: teacherId })
+    LessonPlan.find({ teacher: teacherId }).populate('teacher')
     .then(lessonPlans => {
         res.json(lessonPlans);
     }).catch(error => {
         res.status(500).json({ error: 'An error occured while trieving the lessons plan.'});
     })
 });
+
+router.get('/', (req, res) => {
+    LessonPlan.find()
+      .populate('teacher')
+      .then(lessonPlans => {
+        res.json(lessonPlans);
+      })
+      .catch(error => {
+        res.status(500).json({ error: 'An error occurred while retrieving the lesson plans.' });
+      });
+  });
+  
 
 module.exports = router;
