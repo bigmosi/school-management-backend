@@ -1,25 +1,18 @@
 const mongoose = require('mongoose');
 
-const examScheduleSchema = new mongoose.Schema({
+const examSchema = new mongoose.Schema({
     examName: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    examDate: {
-        type: Date,
-        required: true,
-    },
-    examTime: {
-        type: String,
-        required: true,
-    },
-    examDuration: {
-        type: Number,
-        required: true
-    },
-    additionalInfo: String,
+    questions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question',
+      },
+    ],
   });
 
-const Exam = mongoose.model('Exam', examScheduleSchema);
+const Exam = mongoose.model('Exam', examSchema);
 
 module.exports = Exam;

@@ -13,6 +13,8 @@ const schedule = require('./routes/schedule');
 const subject = require('./routes/subject');
 const announcement = require('./routes/announcement');
 const lesson = require('./routes/lessonPlan');
+const examSchedule = require('./routes/examSchedule.js');
+const question = require('./routes/question')
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -34,6 +36,10 @@ app.use('/api/schedules', schedule);
 app.use('/api/subjects', subject);
 app.use('/api/announcements', announcement);
 app.use('/api/lesson-plans', lesson);
+app.use('/api/exam-schedules', examSchedule);
+app.use('/api/questions', question);
+
+
 
 mongoose
   .connect('mongodb://localhost:27017/schoolDB')
