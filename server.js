@@ -14,7 +14,8 @@ const subject = require('./routes/subject');
 const announcement = require('./routes/announcement');
 const lesson = require('./routes/lessonPlan');
 const examSchedule = require('./routes/examSchedule.js');
-const question = require('./routes/question')
+const question = require('./routes/question');
+const exam = require('./routes/Exam');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/announcements', announcement);
 app.use('/api/lesson-plans', lesson);
 app.use('/api/exam-schedules', examSchedule);
 app.use('/api/questions', question);
+app.use('/api/exams', exam);
 
 
 

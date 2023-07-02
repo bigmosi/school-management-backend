@@ -20,6 +20,6 @@ const examScheduleSchema = new mongoose.Schema({
     additionalInfo: String,
   });
 
-const Exam = mongoose.model('Exam', examScheduleSchema);
+const ExamSchedule = mongoose.model('ExamSchedule', examScheduleSchema);
 
-module.exports = Exam;
+module.exports = ExamSchedule;
