@@ -22,25 +22,27 @@ router.post('/', async (req, res) => {
 });
 
 // Submit an exam
-router.post('/submit', async (req, res) => {
-  const { examId, userAnswers } = req.body;
-
-  console.log('Exam ID:', examId);
+rrouter.post('/:examId/submit', async (req, res) => {
+  const { examId } = req.params;
+  const { userAnswers } = req.body;
 
   try {
+    // Retrieve the exam from the database based on the examId
     const exam = await Exam.findById(examId);
 
-    if (!exam) {
-      return res.status(404).json({ error: 'Exam not found' });
-    }
-
-    // Update the exam with user answers
+    // Update the userAnswers for the exam
     exam.userAnswers = userAnswers;
+
+    // Save the updated exam with userAnswers
     await exam.save();
 
-    res.status(200).json({ message: 'Exam submitted successfully' });
+    // You can perform further processing or grading of the exam here
+    // and send an appropriate response based on your requirements
+
+    // Send a success response
+    res.json({ message: 'Exam submitted successfully' });
   } catch (error) {
-    console.error('Error submitting exam:', error);
+    console.error('Error submitting exam', error);
     res.status(500).json({ error: 'Failed to submit exam' });
   }
 });
@@ -53,6 +55,22 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error getting exams:', error);
     res.status(500).json({ error: 'Failed to get exams' });
+  }
+});
+
+// GET route to fetch the exam data based on examId
+router.get('/exams/:examId', async (req, res) => {
+  const { examId } = req.params;
+
+  try {
+    // Retrieve the exam from the database based on the examId
+    const exam = await Exam.findById(examId).populate('questions');
+
+    // Send the exam data as JSON response
+    res.json(exam);
+  } catch (error) {
+    console.error('Error fetching exam', error);
+    res.status(500).json({ error: 'Failed to fetch exam' });
   }
 });
 
