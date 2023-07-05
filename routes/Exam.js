@@ -24,16 +24,17 @@ router.post('/', async (req, res) => {
 // Submit an exam
 router.post('/:examId/submit', async (req, res) => {
   const { examId } = req.params;
-  const { userAnswers } = req.body;
+  const { userName, userAnswers } = req.body;
 
   try {
     // Retrieve the exam from the database based on the examId
     const exam = await Exam.findById(examId);
 
-    // Update the userAnswers for the exam
+    // Update the userName and userAnswers for the exam
+    exam.userName = userName;
     exam.userAnswers = userAnswers;
 
-    // Save the updated exam with userAnswers
+    // Save the updated exam with userName and userAnswers
     await exam.save();
 
     // You can perform further processing or grading of the exam here
@@ -46,6 +47,7 @@ router.post('/:examId/submit', async (req, res) => {
     res.status(500).json({ error: 'Failed to submit exam' });
   }
 });
+
 
 // Route to get all exams
 router.get('/', async (req, res) => {
@@ -71,6 +73,26 @@ router.get('/:examId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching exam', error);
     res.status(500).json({ error: 'Failed to fetch exam' });
+  }
+});
+
+router.get('/:examId/user-answers', async (req, res) => {
+  const { examId } = req.params;
+
+  try {
+    const exam = await Exam.findById(examId);
+
+    if (!exam) {
+      return res.status(404).json({ message: 'Exam not found' });
+    }
+
+    // Retrieve the userAnswers field from the exam
+    const { userAnswers } = exam;
+
+    res.json(userAnswers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
