@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 });
 
 // Submit an exam
-rrouter.post('/:examId/submit', async (req, res) => {
+router.post('/:examId/submit', async (req, res) => {
   const { examId } = req.params;
   const { userAnswers } = req.body;
 
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET route to fetch the exam data based on examId
-router.get('/exams/:examId', async (req, res) => {
+router.get('/:examId', async (req, res) => {
   const { examId } = req.params;
 
   try {

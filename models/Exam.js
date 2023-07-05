@@ -10,17 +10,10 @@ const examSchema = new mongoose.Schema({
     ref: 'Question',
     required: true
   }],
-  userAnswers: [{
-    questionId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question',
-      required: true
-    },
-    answer: {
-      type: String,
-      required: true
-    }
-  }]
+  userAnswers: {
+    type: [String],
+    required: true
+  }
 });
 
 const Exam = mongoose.model('Exam', examSchema);
