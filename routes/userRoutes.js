@@ -9,7 +9,6 @@ router.post('/', asyncHandler(async (req, res) => {
   // validate user information
   const {name, email, password} = req.body;
   const userExist = await User.findOne({ email });
-
   if (userExist) {
     res.status(400);
     throw new Error('User already exists')
@@ -20,7 +19,7 @@ router.post('/', asyncHandler(async (req, res) => {
     email,
     password
   });
-  
+
 res.status(200).json({message: 'Register user'})
 }))
 
