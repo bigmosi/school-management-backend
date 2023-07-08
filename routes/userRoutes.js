@@ -20,6 +20,7 @@ router.post('/', asyncHandler(async (req, res) => {
     email,
     password
   });
+  
 res.status(200).json({message: 'Register user'})
 }))
 
