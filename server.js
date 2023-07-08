@@ -13,15 +13,15 @@ const schedule = require('./routes/schedule');
 const subject = require('./routes/subject');
 const announcement = require('./routes/announcement');
 const lesson = require('./routes/lessonPlan');
+const userRouter = require('./routes/userRoutes')
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
 
 // Register the  routes
 app.use('/api/students', studentRoutes);
@@ -34,9 +34,10 @@ app.use('/api/schedules', schedule);
 app.use('/api/subjects', subject);
 app.use('/api/announcements', announcement);
 app.use('/api/lesson-plans', lesson);
+app.use('/api/users', userRouter)
 
 mongoose
-  .connect('mongodb://localhost:27017/schoolDB')
+  .connect('mongodb://127.0.0.1:27017/schoolDB?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.1')
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
