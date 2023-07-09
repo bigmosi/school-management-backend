@@ -16,6 +16,7 @@ const lesson = require('./routes/lessonPlan');
 const userRouter = require('./routes/userRoutes')
 
 const PORT = process.env.PORT || 4000;
+const URI = process.env.MONGO_URI
 const app = express();
 
 
