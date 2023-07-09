@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const User = require('../models/User')
+const generateToken = require('../utils/generateToken')
 // desc: Regester user
 // route: POST /api/users
 // access: public
@@ -20,13 +21,41 @@ router.post('/', asyncHandler(async (req, res) => {
     password
   });
 
-res.status(200).json({message: 'Register user'})
+  if (user) {
+    generateToken(res, user._id)
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email
+    })    
+  } else {
+    res.status(400);
+    
+    throw new Error('Invalid user data')
+  }
+
+   res.status(200).json({message: 'Register user'})
 }))
 
 // desc: Authenticate user/set token
 // route: POST /api/users/auth
 // access: public
 router.post('/auth', asyncHandler(async (req, res) => {
+  const {email, password} = req.body;
+  const user = await User.findOne({email})
+
+  if (user && (await user.matchPassword(password))) {
+    generateToken(res, user._id)
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email
+    })    
+  } else {
+    res.status(400);
+    
+    throw new Error('Invalid email or password')
+  }
   res.status(200).json({message: 'authenticate user'})
   }))
   
@@ -35,7 +64,11 @@ router.post('/auth', asyncHandler(async (req, res) => {
 // route: POST /api/users/logout
 // access: private
 router.post('/logout', asyncHandler(async (req, res) => {
-  res.status(200).json({message: 'logout user'})
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0)
+  })
+  res.status(200).json({message: 'user loggedout'})
   }))
   
   // desc: Get user profile
