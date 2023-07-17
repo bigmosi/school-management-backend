@@ -36,11 +36,11 @@ router.post('/', async (req, res) => {
   router.put('/:id', async (req, res) => {
     try {
       const classId = req.params.id;
-      const { name, teacher, schedule, subject, studentIds } = req.body;
+      const { name, teacher, schedule, subject } = req.body;
   
       const updatedClass = await Class.findOneAndUpdate(
         { _id: classId },
-        { name, teacher, schedule, subject, studentIds },
+        { name, teacher, schedule, subject },
         { new: true }
       );
   
@@ -54,7 +54,6 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: 'Server Error' });
     }
   });  
-  
   
   router.delete('/:id', async (req, res) => {
     try {

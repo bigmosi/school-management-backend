@@ -28,20 +28,53 @@ router.post('/:examId/submit', async (req, res) => {
 
   try {
     // Retrieve the exam from the database based on the examId
-    const exam = await Exam.findById(examId);
+    const exam = await Exam.findById(examId).populate('questions');
+
+    if (!exam) {
+      return res.status(404).json({ message: 'Exam not found' });
+    }
+
+    // Check if the number of user answers matches the number of questions
+    if (userAnswers.length !== exam.questions.length) {
+      return res.status(400).json({ message: 'Invalid number of answers' });
+    }
 
     // Update the userName and userAnswers for the exam
     exam.userName = userName;
     exam.userAnswers = userAnswers;
+    exam.score = score;
+    
 
     // Save the updated exam with userName and userAnswers
     await exam.save();
 
     // You can perform further processing or grading of the exam here
     // and send an appropriate response based on your requirements
+    const totalQuestions = exam.questions.length;
+    let score = 0;
+
+    // Compare userAnswers with the correct answers and calculate the score
+    for (let i = 0; i < totalQuestions; i++) {
+      const userAnswer = userAnswers[i];
+      const correctAnswer = exam.questions[i].correctAnswer;
+
+      if (userAnswer === correctAnswer) {
+        score++;
+      }
+    }
+
+    // Generate an appropriate response based on the score
+    let responseMessage = '';
+    if (score === totalQuestions) {
+      responseMessage = 'Congratulations! You scored full marks.';
+    } else if (score >= totalQuestions / 2) {
+      responseMessage = 'You passed the exam.';
+    } else {
+      responseMessage = 'You did not pass the exam.';
+    }
 
     // Send a success response
-    res.json({ message: 'Exam submitted successfully' });
+    res.json({ message: 'Exam submitted successfully', score, responseMessage });
   } catch (error) {
     console.error('Error submitting exam', error);
     res.status(500).json({ error: 'Failed to submit exam' });
