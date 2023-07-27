@@ -44,10 +44,8 @@ router.post('/', async (req, res) => {
         return res.status(404).json({ error: 'Teacher not found' });
       }
   
-      // Create a new subject with the provided data
       const subject = new Subject({ name, code, teacher: teacherId });
   
-      // Save the subject to the database
       await subject.save();
   
       res.status(201).json({ subject, message: 'Subject created successfully.' });
