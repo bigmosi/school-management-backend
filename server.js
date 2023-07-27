@@ -44,7 +44,7 @@ app.use('/api/exams', exam);
 app.use('/api/register/admin', admin);
 
 mongoose
-  .connect('mongodb://localhost:27017/schoolDB')
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
