@@ -17,10 +17,10 @@ const examSchedule = require('./routes/examSchedule.js');
 const question = require('./routes/question');
 const exam = require('./routes/Exam');
 const path = require('path');
+const admin = require('./routes/users');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,11 +41,10 @@ app.use('/api/lesson-plans', lesson);
 app.use('/api/exam-schedules', examSchedule);
 app.use('/api/questions', question);
 app.use('/api/exams', exam);
-
-
+app.use('/api/register/admin', admin);
 
 mongoose
-  .connect('mongodb://localhost:27017/schoolDB')
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
