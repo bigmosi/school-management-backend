@@ -41,9 +41,7 @@ app.use("/api/lesson-plans", lesson);
 app.use("/api/users", userRouter);
 
 mongoose
-  .connect(
-    "mongodb+srv://mracheal180:William60@schoolcluster.zmrdnsj.mongodb.net/test"
-  )
+  .connect(URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
