@@ -43,10 +43,9 @@ app.use("/api/questions", question);
 app.use("/api/exams", exam);
 app.use("/api/register/admin", admin);
 
+const URI = process.env.MONGO_URI;
 mongoose
-  .connect(
-    "mongodb+srv://mracheal180:William60@schoolcluster.zmrdnsj.mongodb.net/test"
-  )
+  .connect(URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
