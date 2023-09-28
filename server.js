@@ -43,8 +43,8 @@ app.use("/api/questions", question);
 app.use("/api/exams", exam);
 app.use("/api/register/admin", admin);
 
-const URI =
-  "mongodb+srv://mracheal180:William60@schoolcluster.zmrdnsj.mongodb.net/test";
+const URI = process.env.MONGO_URI;
+
 mongoose
   .connect(URI)
   .then(() => {
